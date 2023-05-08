@@ -1,0 +1,66 @@
+<script>
+	/*
+	Here's my solution for part 3 of the AngelHack May contest. 
+	Today's puzzle solution is written in Javascript, well actually Javascript embedded in html. It was written by Andy Mitofsky.
+	You can just run this by opening the file in a web browser. 
+	The answer is 3465.
+
+	The wording of the problem is a bit ambiguous. It can be interpreted two different ways. 
+	The second to last sentence of the puzzle can either be interpreted as either "...average between the smallest and largest
+	permutation that is divisible by 7" or as "...average between the smallest and largest permuation of all possible permutations."
+	I'm going to interpret it in the former way because that is consistent with the example given.
+	*/
+	var min=10000;
+	var max=0;
+	var avg=0.0;
+	var digitsToUse=[1,6,7,8];
+	var digitUnderTest=0;
+
+	//Find the thousands digit
+	for (let thousandsDigit=0;thousandsDigit<4;thousandsDigit++) {
+		//Find the hundreds digit
+		for (let hundredsDigit=0;hundredsDigit<4;hundredsDigit++)
+		{
+			//Reject the digit if we've used it before.
+			if(digitsToUse[hundredsDigit]!=digitsToUse[thousandsDigit])
+			{	
+				//Find the tens digit
+				for (let tensDigit=0;tensDigit<4;tensDigit++)
+				{
+					//Reject the digit if we've used it before.
+					if((digitsToUse[tensDigit]!=digitsToUse[hundredsDigit]) && (digitsToUse[tensDigit]!=digitsToUse[thousandsDigit]))
+						{
+						//Find the ones digit
+						for( let onesDigit=0;onesDigit<4;onesDigit++)
+						{
+							//Reject the digit if we've used it before.
+							if(((digitsToUse[onesDigit])!=(digitsToUse[tensDigit]))&&((digitsToUse[onesDigit])!=(digitsToUse[hundredsDigit]))&&((digitsToUse[onesDigit])!=(digitsToUse[thousandsDigit])))
+							{	
+								digitUnderTest=1000*digitsToUse[thousandsDigit]+100*digitsToUse[hundredsDigit]+10*digitsToUse[tensDigit]+digitsToUse[onesDigit];
+								//document.writeln('Possible value= '+digitUnderTest+'<br>');
+								//We've found a possible permutation. 
+								//Next we'll check if it is divisible by 7
+								if((digitUnderTest%7)==0)
+								{
+									//Is it the min or max?
+									if(digitUnderTest<min)
+									{
+										min=digitUnderTest;
+									}
+									if(digitUnderTest>max)
+									{
+										max=digitUnderTest;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	//Find the average and display the answer.
+	avg=(max-min)/2.0;	
+	document.writeln('Hello! <br>');
+	document.writeln('Answer='+avg+'<br>');
+</script>

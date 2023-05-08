@@ -9,4 +9,8 @@ To get a lua compiler on an Ubuntu Linux box, use
 
 The May 6 entry is written in Fortran.
 To get a fortran compiler on an Ubuntu Linux box, use
-	sudo apt-get install gfortran  
+	sudo apt-get install gfortran
+
+The May 8 solution is written in Javascript embedded in html. 
+You can just open the solution in a web browser.
+  
