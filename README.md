@@ -24,4 +24,8 @@ the file may10_checker.sce is not part of my solution, but I included it anyways
 wrote a little scilab script to double check my answer. As it is written, it doesn't 
 give the actual score. However, I used it to calculate the score of subsets of the answer
 to verify my Java code. My java code is the actual solution. 
+
+The May 12 solution is written in Perl and uses regexes. Perl was preinstalled on my linux box, so to run I I just had to do something like:
+	perl 12-05-23.pl
+
 	  
