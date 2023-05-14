@@ -28,4 +28,7 @@ to verify my Java code. My java code is the actual solution.
 The May 12 solution is written in Perl and uses regexes. Perl was preinstalled on my linux box, so to run I I just had to do something like:
 	perl 12-05-23.pl
 
+The May 14 solution is written in C++. I'm not quite sure I got the minimum score, but I think I got a good score. You can compile and run it with something like:
+	g++ 14-05-23.cpp -0 14-05-23.o
+	./14-05-23.o
 	  
