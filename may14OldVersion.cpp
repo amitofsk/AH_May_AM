@@ -9,12 +9,6 @@
  * be fairly general. However, the main loop is somewhat specific to the starting string.
  * If you have a different starting string, you'll have to tweak it a bit.
  * Also, I print most, but not every, step. I print a lot so hopefully this is enough for you to follow along.
- *
- * May 16 update: I found a better solution, with a score of 78. 
- * Somehow I'm less confident of this version than the last. I don't 
- * really like this solution, though, because it is less general than my previous 
- * solution. I'm submitting it anyways because the problem aske for the minimum, not
- * a general solution. 
  */
 
 using namespace std;
@@ -22,14 +16,11 @@ using namespace std;
 string findAA(string aStr);
 string removeSolos(string bStr);
 string findABA(string dStr);
+string findABCA(string eStr);
+string findABCDA(string gStr);
 string dropTwos(string fStr);
-string dropS(string jStr);
-string dropLoc(string jStr, int loc);
-
 
 //Declare some variables we'll need
-string dropFourAt(string jStr, int loc);
-string dropThreeAt(string jStr, int loc);
 int score=0; 
 int ASCIIMIN=97;
 int ASCIIMAX=122;
@@ -47,33 +38,22 @@ int main()
 	workingStr=findABA(workingStr);
 	workingStr=dropTwos(workingStr);
 	cout<<endl<<"POINT XXX score="<<score<<endl<<endl;
-	workingStr=dropS(workingStr);
+	workingStr=findABCA(workingStr);
 	workingStr=findABA(workingStr);
-	workingStr=dropFourAt(workingStr, 46);
-	workingStr=dropFourAt(workingStr, 56);
-	workingStr=dropTwos(workingStr);
-	workingStr=findABA(workingStr);
-	workingStr=findABA(workingStr);
-	workingStr=findABA(workingStr);
-	workingStr=dropThreeAt(workingStr,27);
-	workingStr=dropFourAt(workingStr, 7);
+	workingStr=findABCA(workingStr);
+	cout<<endl<<"POINT YYY score="<<score<<endl<<endl;
+	for(int qq=0;qq<3;qq++)
+	{
+		workingStr=removeSolos(workingStr);
+		workingStr=findAA(workingStr);
+		workingStr=findABA(workingStr);
+		workingStr=findABCA(workingStr);
+		workingStr=findABCDA(workingStr);
+		workingStr=dropTwos(workingStr);
+		cout<<endl<<"POINT ZZZ"<<qq<<" score="<<score<<endl;
+	}
+	cout<<workingStr<<endl;
 	workingStr=findAA(workingStr);
-	workingStr=findABA(workingStr);
-	workingStr=dropTwos(workingStr);
-	workingStr=dropFourAt(workingStr,34);
-	workingStr=dropFourAt(workingStr,24);
-	workingStr=findAA(workingStr);
-        workingStr=findABA(workingStr);
-        workingStr=dropFourAt(workingStr,17);
-	workingStr=dropLoc(workingStr, 16);
-	workingStr=dropLoc(workingStr,16);
-	workingStr=findAA(workingStr);
-	workingStr=findAA(workingStr);
-	workingStr=findABA(workingStr);
-	workingStr=dropFourAt(workingStr,7);
-	workingStr=dropFourAt(workingStr,5);
-	workingStr=findABA(workingStr);
-	workingStr=findAA(workingStr);	
 	cout<<"Score="<<score<<endl;
 	return 0;
 }
@@ -117,7 +97,6 @@ string findAA(string aStr)
 	return newStr;
 
 }
-
 
 string removeSolos( string bStr)
 {
@@ -165,6 +144,7 @@ string removeSolos( string bStr)
 }
 
 
+
 string findABA(string dStr)
 {
 	//This function looks for the pattern ABA. If so, it is replaced by A, and the score is 
@@ -189,6 +169,35 @@ string findABA(string dStr)
 }
 
 
+string findABCA(string eStr)
+{
+	//This function looks for the pattern ABCA. If it finds it, the pattern is replaced
+	//by A and score is incremented by 2.
+	cout<<"Finding ABCA"<<endl;
+	int eLength=eStr.length();
+	int mmax=eLength-3;
+	int eCount=0;
+	for(int mm=0;mm<mmax;mm++)
+	{
+		//if((eStr.at(mm)==eStr.at(mm+3))&&(eCount<30))
+		if(eStr.at(mm)==eStr.at(mm+3))
+			{
+				cout<<"FOUND="<<eStr.at(mm)<<eStr.at(mm+1)<<eStr.at(mm+2)<<eStr.at(mm+3)<<endl;
+				eStr.erase(mm,3);
+				mmax=mmax-3;
+				score=score+2;
+				cout<<eStr<<endl;
+				eCount++;
+				//DONT GO THROUGH ABA Here... find all ABCA's first
+				//eStr=findABA(eStr);
+                                //return eStr;
+
+
+			}
+	}
+	eStr=findABA(eStr);
+	return eStr;
+}
 
 string dropTwos(string fStr)
 {
@@ -230,18 +239,14 @@ string dropTwos(string fStr)
 		{
 			findFirst=fStr.find(fLetter);
                         findNext=fStr.find(fLetter, findFirst+1);
+                        //cout<<"First at "<<findFirst;
+                        //cout<<"   Next at "<<findNext<<endl;
 
 			if(fStr.at(findFirst+1)==(fStr.at(findNext-1)))
 			{
 				specialCase=1;
 				cout<<"We have two, but don't drop the special case="<<fChar<<endl;
 			}
-			//FUDGING HERE
-			if(fChar=='u') 
-			{
-				specialCase=1;
-			}
-
 			if(specialCase==0)
 			{
 				//We have exactly 2, and we don't have the special case.
@@ -251,8 +256,8 @@ string dropTwos(string fStr)
 				//We know there are two so drop them.
 				findFirst=fStr.find(fLetter);
 				findNext=fStr.find(fLetter, findFirst+1);
-				//cout<<"First at "<<findFirst;
-				//cout<<"   Next at "<<findNext<<endl; 
+				cout<<"First at "<<findFirst;
+				cout<<"   Next at "<<findNext<<endl; 
 				fStr=fStr.erase(findFirst,1);
 				findFirst=fStr.find(fLetter);
 				fStr=fStr.erase(findFirst,1);
@@ -260,66 +265,43 @@ string dropTwos(string fStr)
 				cout<<fStr<<endl;
 			}
 		}
+
 	}
-	cout<<"score="<<score<<"   "<<fStr<<endl;
 	return fStr;
 }
 
-
-string dropS(string jStr)
+string findABCDA(string gStr)
 {
-	//This function drops all S's and increments the score.
-	cout<<"DROPPING S"<<endl;
-	int jLength=jStr.length();
+	//This function looks for the pattern ABCDA. If found, it is replaced with A and score is
+	//incremented by 3. We don't look for all the cases of this pattern though. Once we 
+	//find one, we move on.
+	cout<<"FINDING ABCDA"<<endl;
+	int gLength=gStr.length();
+        int mmax=gLength-4;
+	int foundOne=0;
 	size_t foundLoc=string::npos;
-	for(int jj=0;jj<4;jj++)
-	{
-		foundLoc=jStr.find("s");
-		if(foundLoc!=string::npos)
-			{jStr.erase(foundLoc,1);
-			 score++;
+        for(int mm=0;mm<mmax;mm++)
+        {
+                if((gStr.at(mm)==gStr.at(mm+4)))
+                        {
+				cout<<"FOUND ABCDA="<<gStr.at(mm)<<gStr.at(mm+1)<<gStr.at(mm+2);
+				cout<<gStr.at(mm+3)<<gStr.at(mm+4)<<endl;
+				gStr.erase(mm,4);
+                                mmax=mmax-4;
+                                score=score+3;
+				cout<<"score="<<score<<"  "<<gStr<<endl;
+                                cout<<gStr<<endl;
+				foundOne++;
+				gStr=dropTwos(gStr);
+				gStr=findABCA(gStr);
+				return gStr;	
+
+                        
 			}
 		
-	}
-	cout<<"score="<<score<<"   "<<jStr<<endl;
-	return jStr;
-}
+        }
+        //gStr=findABCA(gStr);
 
-
-string dropLoc(string jStr, int loc)
-{
-	//This function drops one letter and increments the score by one.
-        cout<<"Dropping At location="<<loc<<endl;
-        int jLength=jStr.length();
-        jStr.erase(loc-1,1); 
-	score++;
-        cout<<"score="<<score<<"  "<<jStr<<endl;
-        return jStr;
-}
-
-
-
-
-string dropFourAt(string jStr, int loc)
-{
-	//This function drops four letters either in the form ABCA or ABAC. In either case
-	//this raises the score by 3, so I can use this for both types of four letter strings.
-	cout<<"DROPPING FOUR IN A ROW ABCA="<<jStr.at(loc-1)<<jStr.at(loc)<<jStr.at(loc+1)<<jStr.at(loc+2)<<endl;
-	score=score+3;
-	jStr.erase(loc-1,4);
-	cout<<"score="<<score<<"   "<<jStr<<endl;
-	return jStr;
+	return gStr;
 
 };
-
-
-string dropThreeAt(string jStr, int loc)
-{
-	//This function drops three letters at the specified location and increases
-	//the score by 3.
-	cout<<"DROPPING THREE ABC="<<jStr.at(loc-1)<<jStr.at(loc)<<jStr.at(loc+1)<<endl;
-	score=score+3;
-	jStr.erase(loc-1,3);
-	cout<<"score="<<score<<"  "<<jStr<<endl;
-	return jStr;
-}
