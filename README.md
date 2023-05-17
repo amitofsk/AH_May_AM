@@ -43,4 +43,5 @@ The May 14 solution is written in C++. I'm not quite sure I got the minimum scor
 	 
 
 May 16 - OK, so I found a better solution for puzzle 6 from May 14. I moved the original code to the file named may14OldVersion.cpp in case you want to take a look. My current answer for the minimum value is 78. I'm even less confident in this answer than I was before. Also, I don't really like my code, because it is specific to the input string and not general. However, the problem asks for the minimum value, not general code.
- 
+
+The May 16 solution is written in Python. 
